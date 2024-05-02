@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inserir Usuário</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("form").on("submit", function(event){
+                event.preventDefault();
+
+                var formData = {
+                    nome: $("#nome").val(),
+                    email: $("#email").val(),
+                    cpf: $("#cpf").val(),
+                    senha: $("#senha").val(),
+                    confirmarSenha: $("#confirmarSenha").val(),
+                    cargo: $("#cargo").val(),
+                    status: $("#status").val()
+                };
+
+                $.ajax({
+                    url: "/api/users",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(formData),
+                    success: function(response){
+                        console.log(response);
+                        window.location.href = "/displayUser.html"; // Redireciona para a página displayUser.html
+                    },
+                    error: function(error){
+                        console.log(error);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<h1>Inserir Usuário</h1>
+<form action="/api/users" method="post">
+    <label for="nome">Nome:</label><br>
+    <input type="text" id="nome" name="nome"><br>
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email"><br>
+    <label for="cpf">CPF:</label><br>
+    <input type="text" id="cpf" name="cpf"><br>
+    <label for="senha">Senha:</label><br>
+    <input type="password" id="senha" name="senha"><br>
+    <label for="confirmarSenha">Confirmar Senha:</label><br>
+    <input type="password" id="confirmarSenha" name="confirmarSenha"><br>
+    <label for="cargo">Cargo:</label><br>
+    <input type="text" id="cargo" name="cargo"><br>
+    <label for="status">Status:</label><br>
+    <input type="text" id="status" name="status"><br>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Usuários Cadastrados</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.ajax({
+                url: "/api/users",
+                type: "GET",
+                success: function(response){
+                    var table = $("<table />");
+                    table.append("<tr><th>Nome</th><th>Email</th><th>CPF</th><th>Cargo</th><th>Status</th></tr>");
+                    response.forEach(function(user){
+                        var row = $("<tr />");
+                        row.append("<td>" + user.nome + "</td>");
+                        row.append("<td>" + user.email + "</td>");
+                        row.append("<td>" + user.cpf + "</td>");
+                        row.append("<td>" + user.cargo + "</td>");
+                        row.append("<td>" + user.status + "</td>");
+                        table.append(row);
+                    });
+                    $("body").append(table);
+                },
+                error: function(error){
+                    console.log(error);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<h1>Usuários Cadastrados</h1>
+</body>
+</html>
+
