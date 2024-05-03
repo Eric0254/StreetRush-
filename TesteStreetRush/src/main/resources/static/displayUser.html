@@ -4,13 +4,15 @@
     <title>Usuários Cadastrados</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+
+
         $(document).ready(function(){
             $.ajax({
                 url: "/api/users",
                 type: "GET",
                 success: function(response){
                     var table = $("<table />");
-                    table.append("<tr><th>Nome</th><th>Email</th><th>CPF</th><th>Cargo</th><th>Status</th></tr>");
+                    table.append("<tr><th>Nome</th><th>Email</th><th>CPF</th><th>Cargo</th><th>Status</th><th>Ações</th></tr>");
                     response.forEach(function(user){
                         var row = $("<tr />");
                         row.append("<td>" + user.nome + "</td>");
@@ -18,6 +20,7 @@
                         row.append("<td>" + user.cpf + "</td>");
                         row.append("<td>" + user.cargo + "</td>");
                         row.append("<td>" + user.status + "</td>");
+                        row.append("<td><button class='edit' data-id='" + user.id + "'>Editar</button> <button class='delete' data-id='" + user.id + "'>Deletar</button></td>");
                         table.append(row);
                     });
                     $("body").append(table);
@@ -26,11 +29,38 @@
                     console.log(error);
                 }
             });
+
+            $("body").on("click", ".edit", function(){
+                var userId = $(this).data("id");
+                window.location.href = "index.html?id=" + userId;
+            });
+
+            $("body").on("click", ".delete", function(){
+                var userId = $(this).data("id");
+                $.ajax({
+                    url: "/api/users/" + userId,
+                    type: "DELETE",
+                    success: function(response){
+                        console.log(response);
+                        location.reload(); // Recarrega a página para atualizar a lista de usuários
+                    },
+                    error: function(error){
+                        console.log(error);
+                    }
+                });
+            });
         });
+        
+
     </script>
 </head>
 <body>
 <h1>Usuários Cadastrados</h1>
+<button id="add">+</button>
+<script>
+    document.getElementById("add").addEventListener("click", function(){
+        window.location.href = "index.html";
+    });
+</script>
 </body>
 </html>
-

@@ -49,4 +49,8 @@ public class UserService {
         }
         return "Usuário com id " + id + " não encontrado.";
     }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 }

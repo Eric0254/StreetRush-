@@ -1,10 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Inserir Usuário</title>
+    <title>Cadastrar/Editar Usuário</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function(){
+            var urlParams = new URLSearchParams(window.location.search);
+            var userId = urlParams.get('id');
+
+            if (userId) {
+                $.ajax({
+                    url: "/api/users/" + userId,
+                    type: "GET",
+                    success: function(user){
+                        $("#nome").val(user.nome);
+                        $("#email").val(user.email);
+                        $("#cpf").val(user.cpf);
+                        $("#senha").val(user.senha);
+                        $("#confirmarSenha").val(user.confirmarSenha);
+                        $("#cargo").val(user.cargo);
+                        $("#status").val(user.status);
+                    },
+                    error: function(error){
+                        console.log(error);
+                    }
+                });
+            }
+
             $("form").on("submit", function(event){
                 event.preventDefault();
 
@@ -18,14 +40,22 @@
                     status: $("#status").val()
                 };
 
+                var url = "/api/users";
+                var type = "POST";
+
+                if (userId) {
+                    url += "/" + userId;
+                    type = "PUT";
+                }
+
                 $.ajax({
-                    url: "/api/users",
-                    type: "POST",
+                    url: url,
+                    type: type,
                     contentType: "application/json",
                     data: JSON.stringify(formData),
                     success: function(response){
                         console.log(response);
-                        window.location.href = "/displayUser.html"; // Redireciona para a página displayUser.html
+                        window.location.href = "/login.html";
                     },
                     error: function(error){
                         console.log(error);
@@ -36,7 +66,7 @@
     </script>
 </head>
 <body>
-<h1>Inserir Usuário</h1>
+<h1>Cadastrar/Editar Usuário</h1>
 <form action="/api/users" method="post">
     <label for="nome">Nome:</label><br>
     <input type="text" id="nome" name="nome"><br>

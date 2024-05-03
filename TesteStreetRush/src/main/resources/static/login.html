@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("form").on("submit", function(event){
+                event.preventDefault();
+
+                var formData = {
+                    email: $("#email").val(),
+                    senha: $("#senha").val()
+                };
+
+                $.ajax({
+                    url: "/api/users/login",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(formData),
+                    success: function(user){
+                        if (user.status === "ativo") {
+                            // Redireciona para a página inicial se o login for bem-sucedido
+                            window.location.href = "/displayUser.html";
+                        } else {
+                            alert("Falha ao logar, usuário não encontrado.");
+                        }
+                    },
+                    error: function(error){
+                        console.log(error);
+                        alert("Falha ao logar, usuário não encontrado.");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<h1>Login</h1>
+<form action="/api/users/login" method="post">
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email"><br>
+    <label for="senha">Senha:</label><br>
+    <input type="password" id="senha" name="senha"><br>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
