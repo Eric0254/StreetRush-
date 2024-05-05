@@ -20,8 +20,10 @@
                     data: JSON.stringify(formData),
                     success: function(user){
                         if (user.status === "ativo") {
+                            // Armazena o usuário no localStorage
+                            localStorage.setItem('user', JSON.stringify(user));
                             // Redireciona para a página inicial se o login for bem-sucedido
-                            window.location.href = "/displayUser.html";
+                            window.location.href = "/index.html";
                         } else {
                             alert("Falha ao logar, usuário não encontrado.");
                         }

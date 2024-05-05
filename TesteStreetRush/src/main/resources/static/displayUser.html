@@ -32,7 +32,7 @@
 
             $("body").on("click", ".edit", function(){
                 var userId = $(this).data("id");
-                window.location.href = "index.html?id=" + userId;
+                window.location.href = "registrar.html?id=" + userId;
             });
 
             $("body").on("click", ".delete", function(){
@@ -59,7 +59,7 @@
 <button id="add">+</button>
 <script>
     document.getElementById("add").addEventListener("click", function(){
-        window.location.href = "index.html";
+        window.location.href = "registrar.html";
     });
 </script>
 </body>
