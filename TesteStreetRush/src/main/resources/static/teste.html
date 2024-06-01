@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produto</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Adicione estilos personalizados aqui, se necessário */
+    </style>
+</head>
+<body>
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <!-- As imagens do produto serão exibidas aqui -->
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Anterior</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Próximo</span>
+    </a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    console.log(jQuery);
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    jQuery(document).ready(function() {
+        // Obtém o ID do produto da URL
+        var urlParams = new URLSearchParams(window.location.search);
+        var productId = urlParams.get('id') || 1; // Use um ID padrão se não houver parâmetro na URL
+
+        // Faz uma solicitação AJAX para obter os detalhes do produto com base no ID
+        jQuery.ajax({
+            url: '/api/produtos/' + productId, // URL para obter os detalhes do produto pelo ID
+            type: 'GET',
+            success: function(data) {
+                // Limpa o conteúdo atual do carrossel
+                jQuery('#carouselExampleControls .carousel-inner').empty();
+
+                // Adiciona as imagens do produto ao carrossel
+                jQuery.each(data.imagens, function(index, image) {
+                    var itemClass = (index === 0) ? 'carousel-item active' : 'carousel-item';
+                    var imgElement = '<div class="' + itemClass + '"><img class="d-block w-100" src="/img/' + image + '"></div>';
+                    jQuery('#carouselExampleControls .carousel-inner').append(imgElement);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Erro ao obter os detalhes do produto:', error);
+                // Aqui você pode lidar com erros de forma apropriada, como exibir uma mensagem de erro na página.
+            }
+        });
+    });
+</script>
+</body>
+</html>
