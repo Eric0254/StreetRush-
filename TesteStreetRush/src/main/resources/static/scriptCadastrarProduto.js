@@ -30,5 +30,5 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function cancel() {
-    window.location.href = "/produtos"; // Redireciona para a lista de produtos
+    window.location.href = "/listaProdutos.html"; // Redireciona para a lista de produtos
 }
