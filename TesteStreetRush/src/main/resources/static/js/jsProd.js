@@ -13,7 +13,8 @@ $(document).ready(function() {
                             <div class="card-body">
                                 <h5 class="card-title">${produto.nome}</h5>
                                 <p class="card-text">Preço: ${produto.preco}</p>
-                                <a href="/api/produtos/${produto.id}" class="btn btn-primary">Ver detalhes</a>
+                                <a href="PgDetalhes.html?id=${produto.id}" class="btn btn-primary">Ver detalhes</a>
+
                             </div>
                         </div>
                     </div>
