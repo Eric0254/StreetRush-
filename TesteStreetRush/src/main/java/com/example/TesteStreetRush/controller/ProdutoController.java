@@ -4,6 +4,7 @@ import com.example.TesteStreetRush.model.Produto;
 import com.example.TesteStreetRush.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class ProdutoController {
     @Autowired
     private ProdutoService produtoService;
 
-    private static final String UPLOAD_DIR = "C:\\Users\\Gabriel\\Documents\\GitHub\\StreetRush-\\TesteStreetRush\\src\\main\\resources\\static\\img";
+    private static final String UPLOAD_DIR = "C:\\Users\\Micro\\OneDrive\\Documentos\\GitHub\\StreetRush-\\TesteStreetRush\\src\\main\\resources\\static\\img";
     @GetMapping
     public ResponseEntity<List<Produto>> listProducts() {
         List<Produto> products = produtoService.getAllProducts();
@@ -103,6 +104,13 @@ public class ProdutoController {
     public ResponseEntity<Resource> showProductCarousel() {
         Resource resource = new ClassPathResource("static/teste.html");
         return ResponseEntity.ok().body(resource);
+    }
+
+
+    @GetMapping("/img/{filename:.+}")
+    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
+        Resource file = new FileSystemResource("C:\\Users\\Micro\\OneDrive\\Documentos\\GitHub\\StreetRush-\\TesteStreetRush\\src\\main\\resources\\static\\img\\" + filename);
+        return ResponseEntity.ok().body(file);
     }
 
 }
