@@ -128,26 +128,23 @@
   }
 
   document.getElementById('cadastroForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Evita que o formulário seja enviado normalmente
+    event.preventDefault();
 
-    // Coletando os dados do formulário
     const formData = new FormData(this);
 
-    // Validando CPF
     const cpf = formData.get('cpf');
     if (!validarCPF(cpf)) {
       alert('CPF inválido.');
       return;
     }
 
-    // Validando Data de Nascimento
     const nascimento = formData.get('nascimento');
     if (!validarDataNascimento(nascimento)) {
       alert('Você deve ter pelo menos 18 anos.');
       return;
     }
 
-    // Criando o objeto cliente a partir dos dados do formulário
+
     const cliente = {
       nome: formData.get('nome'),
       email: formData.get('email'),
@@ -157,7 +154,6 @@
       genero: formData.get('genero')
     };
 
-    // Criando o objeto endereço de faturamento
     const enderecoFaturamento = {
       cep: formData.get('cep'),
       logradouro: formData.get('logradouro'),
@@ -168,13 +164,11 @@
       uf: formData.get('uf')
     };
 
-    // Criando o objeto de wrapper
     const wrapper = {
       cliente: cliente,
       enderecoFaturamento: enderecoFaturamento
     };
 
-    // Enviando os dados para a API
     fetch('/clientes/cadastro', {
       method: 'POST',
       headers: {
