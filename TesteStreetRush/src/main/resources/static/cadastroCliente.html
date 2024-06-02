@@ -101,7 +101,7 @@
             .then(response => {
               if (response.ok) {
                 alert('Cliente cadastrado com sucesso!');
-                location.reload(); // Atualiza a página após o cadastro
+                window.location.href = "/login.html";
               } else {
                 throw new Error('Erro ao cadastrar cliente');
               }

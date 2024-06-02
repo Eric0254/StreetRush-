@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/clientes")
 public class ClienteController {
@@ -18,5 +20,12 @@ public class ClienteController {
     public ResponseEntity<Cliente> cadastrarClienteComEnderecoFaturamento(@RequestBody ClienteCadastroWrapper wrapper) {
         Cliente novoCliente = clienteService.cadastrarClienteComEnderecoFaturamento(wrapper.getCliente(), wrapper.getEnderecoFaturamento());
         return new ResponseEntity<>(novoCliente, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/atualizar/{id}")
+    public ResponseEntity<Cliente> atualizarCliente(@PathVariable Long id, @RequestBody ClienteCadastroWrapper wrapper) {
+        Optional<Cliente> clienteAtualizado = clienteService.atualizarCliente(id, wrapper.getCliente(), wrapper.getEnderecoFaturamento());
+        return clienteAtualizado.map(cliente -> new ResponseEntity<>(cliente, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }
