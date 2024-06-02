@@ -8,16 +8,22 @@ $(document).ready(function() {
             produtos.forEach(produto => {
                 let card = `
                     <div class="col-md-4">
-                        <div class="card">
-                            <img src="/api/produtos/img/${produto.imagemPrincipal}" class="card-img-top" alt="${produto.nome}">
-                            <div class="card-body">
-                                <h5 class="card-title">${produto.nome}</h5>
-                                <p class="card-text">Preço: ${produto.preco}</p>
-                                <a href="PgDetalhes.html?id=${produto.id}" class="btn btn-primary">Ver detalhes</a>
+    <div class="card h-100 shadow-sm">
+        <a href="PgDetalhes.html?id=${produto.id}" class="text-decoration-none text-dark">
+            <img src="/api/produtos/img/${produto.imagemPrincipal}" class="card-img-top" alt="${produto.nome}">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">${produto.nome}</h5>
+                <p class="card-text mt-auto">Preço: ${produto.preco}</p>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <small class="text-muted">Código: ${produto.id}</small>
+                    <button class="btn btn-primary">Ver mais</button>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
 
-                            </div>
-                        </div>
-                    </div>
+
                 `;
                 productList.append(card);
             });
