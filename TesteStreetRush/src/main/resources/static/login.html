@@ -24,7 +24,7 @@
                             // Armazena o usuário no localStorage
                             localStorage.setItem('user', JSON.stringify(user));
                             // Redireciona para a página inicial se o login for bem-sucedido
-                            window.location.href = "/index.html";
+                            window.location.href = "/telaADM.html";
                         } else {
                             alert("Falha ao logar, usuário não encontrado.");
                         }
@@ -32,6 +32,24 @@
                     error: function(error){
                         console.log(error);
                         alert("Falha ao logar, usuário não encontrado.");
+                    }
+                });
+                $.ajax({
+                    url: "/clientes/login",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(formData),
+                    success: function(cliente){
+                        if (cliente && cliente.id) {
+                            localStorage.setItem('cliente', JSON.stringify(cliente));
+                            window.location.href = "/index.html";
+                        } else {
+                            alert("Falha ao logar, cliente não encontrado.");
+                        }
+                    },
+                    error: function(error){
+                        console.log("Erro no login de cliente:", error);
+                        alert("Falha ao logar, cliente não encontrado.");
                     }
                 });
             });

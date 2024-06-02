@@ -39,4 +39,5 @@ public class ClienteService {
     public Optional<Cliente> login(String email, String senha) {
         return clienteRepository.findByEmailAndSenha(email, senha);
     }
+
 }

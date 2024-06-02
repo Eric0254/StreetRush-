@@ -157,14 +157,19 @@
 <script>
     $(document).ready(function(){
         var user = JSON.parse(localStorage.getItem('user'));
+        var cliente = JSON.parse(localStorage.getItem('cliente'));
 
         if (user) {
-            $("#loginItem").hide(); // Esconde o botão de login
-            $("#username").text(user.nome); // Define o nome do usuário
-            $("#userItem").show(); // Mostra o item do usuário
+            $("#loginItem").hide();
+            $("#username").text(user.nome);
+            $("#userItem").show();
+        } else if (cliente) {
+            $("#loginItem").hide();
+            $("#username").text(cliente.nome);
+            $("#userItem").show();
         } else {
-            $("#loginItem").show(); // Mostra o botão de login
-            $("#userItem").hide(); // Esconde o item do usuário
+            $("#loginItem").show();
+            $("#userItem").hide();
         }
 
         $("#loginButton").click(function(){
@@ -172,12 +177,16 @@
         });
 
         $("#profileOption").click(function(){
-            // Redireciona para a página de perfil
-            window.location.href = "/profile.html";
+            if (user) {
+                window.location.href = "/profile.html";
+            } else if (cliente) {
+                window.location.href = "/Perfil.html";
+            }
         });
 
         $("#logoutOption").click(function(){
             localStorage.removeItem('user');
+            localStorage.removeItem('cliente');
             location.reload();
         });
     });

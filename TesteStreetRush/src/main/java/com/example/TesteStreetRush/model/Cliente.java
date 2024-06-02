@@ -24,10 +24,6 @@ public class Cliente {
     private String genero;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "endereco_entrega_id", referencedColumnName = "id")
-    private EnderecoEntrega enderecoEntrega;
-
-    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_faturamento_id", referencedColumnName = "id")
     private EnderecoFaturamento enderecoFaturamento;
 
@@ -35,7 +31,7 @@ public class Cliente {
     }
 
     public Cliente(Long id, String nome, String email, String cpf, String senha, String nascimento, String genero,
-                   EnderecoEntrega enderecoEntrega, EnderecoFaturamento enderecoFaturamento) {
+                    EnderecoFaturamento enderecoFaturamento) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -43,7 +39,6 @@ public class Cliente {
         this.senha = senha;
         this.nascimento = nascimento;
         this.genero = genero;
-        this.enderecoEntrega = enderecoEntrega;
         this.enderecoFaturamento = enderecoFaturamento;
     }
 
@@ -103,13 +98,6 @@ public class Cliente {
         this.genero = genero;
     }
 
-    public EnderecoEntrega getEnderecoEntrega() {
-        return enderecoEntrega;
-    }
-
-    public void setEnderecoEntrega(EnderecoEntrega enderecoEntrega) {
-        this.enderecoEntrega = enderecoEntrega;
-    }
 
     public EnderecoFaturamento getEnderecoFaturamento() {
         return enderecoFaturamento;
