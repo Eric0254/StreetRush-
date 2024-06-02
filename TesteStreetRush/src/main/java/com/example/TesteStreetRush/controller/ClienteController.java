@@ -28,4 +28,10 @@ public class ClienteController {
         return clienteAtualizado.map(cliente -> new ResponseEntity<>(cliente, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+    @PostMapping("/login")
+    public ResponseEntity<Cliente> loginCliente(@RequestBody Cliente cliente) {
+        Optional<Cliente> clienteLogado = clienteService.login(cliente.getEmail(), cliente.getSenha());
+        return clienteLogado.map(cli -> new ResponseEntity<>(cli, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
+    }
 }
