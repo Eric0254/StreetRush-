@@ -35,4 +35,8 @@ public class ClienteService {
             return Optional.empty();
         }
     }
+
+    public Optional<Cliente> login(String email, String senha) {
+        return clienteRepository.findByEmailAndSenha(email, senha);
+    }
 }
