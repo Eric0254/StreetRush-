@@ -134,8 +134,10 @@
                             <div id="cpf-error" style="color: red; display: none;">CPF inválido.</div>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="cargo">Cargo</label>
-                            <input type="text" class="form-control" id="cargo" name="cargo" required>
+                            <select id="cargo" name="cargo">
+                                <option value="Administrador">Administrador</option>
+                                <option value="Estoquista">Estoquista</option>
+                            </select><br>
                         </div>
                     </div>
                     <div class="form-row">
@@ -149,8 +151,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="status">Status</label>
-                        <input type="text" class="form-control" id="status" name="status" required>
+                        <input type="hidden" id="status" name="status" value="ativo">
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Enviar</button>
                 </form>

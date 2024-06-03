@@ -50,6 +50,15 @@ public class UserService {
         return "Usuário com id " + id + " não encontrado.";
     }
 
+    public User updateUserStatus(Long id, String status) {
+        User existingUser = getUserById(id);
+        if (existingUser != null) {
+            existingUser.setStatus(status);
+            return userRepository.save(existingUser);
+        }
+        return null;
+    }
+
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }

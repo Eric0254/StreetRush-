@@ -77,7 +77,7 @@ public class ProdutoController {
             produto.setStatus("Ativo");
             produtoService.addProduct(produto);
 
-            // Redirecionamento para a página desejada após o salvamento bem-sucedido
+
             return ResponseEntity.status(HttpStatus.FOUND).location(ServletUriComponentsBuilder.fromPath("/listaProdutos.html").build().toUri()).build();
         } catch (IOException e) {
             e.printStackTrace();
@@ -98,12 +98,37 @@ public class ProdutoController {
         return imagens;
     }
 
-    @GetMapping("/carrossel")
-    public ResponseEntity<Resource> showProductCarousel() {
-        Resource resource = new ClassPathResource("static/teste.html");
-        return ResponseEntity.ok().body(resource);
-    }
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateProduct(
+            @PathVariable("id") Long id,
+            @ModelAttribute Produto produto,
+            @RequestParam(value = "files", required = false) MultipartFile[] files,
+            @RequestParam("imagemPrincipal") String imagemPrincipal) {
+        try {
+            Produto existingProduct = produtoService.getProductById(id);
+            if (existingProduct == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado.");
+            }
 
+            existingProduct.setNome(produto.getNome());
+            existingProduct.setAvaliacao(produto.getAvaliacao());
+            existingProduct.setDescricao(produto.getDescricao());
+            existingProduct.setPreco(produto.getPreco());
+            existingProduct.setQtdEstoque(produto.getQtdEstoque());
+            existingProduct.setImagemPrincipal(imagemPrincipal);
+
+            if (files != null && files.length > 0) {
+                List<String> images = uploadImages(files);
+                existingProduct.setImagens(images);
+            }
+
+            produtoService.updateProduct(existingProduct);
+            return ResponseEntity.ok().body("Produto atualizado com sucesso.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar o produto.");
+        }
+    }
 
     @GetMapping("/img/{filename:.+}")
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {

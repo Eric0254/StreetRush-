@@ -178,55 +178,93 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    document.getElementById('atualizacaoForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+    $(document).ready(function() {
+        var cliente = JSON.parse(localStorage.getItem('cliente'));
 
-        const cliente = JSON.parse(localStorage.getItem('cliente'));
-        if (!cliente || !cliente.id) {
-            alert('Cliente não logado ou ID do cliente não encontrado.');
-            return;
+        if (cliente) {
+            $("#nome").val(cliente.nome);
+            $("#email").val(cliente.email);
+            $("#cpf").val(cliente.cpf);
+            $("#senha").val(cliente.senha);
+            $("#nascimento").val(cliente.nascimento);
+            $("#genero").val(cliente.genero);
+
+            if (cliente.enderecoFaturamento) {
+                var endereco = cliente.enderecoFaturamento;
+                $("#cep").val(endereco.cep);
+                $("#logradouro").val(endereco.logradouro);
+                $("#numero").val(endereco.numero);
+                $("#complemento").val(endereco.complemento);
+                $("#bairro").val(endereco.bairro);
+                $("#cidade").val(endereco.cidade);
+                $("#uf").val(endereco.uf);
+            }
         }
-
-        const formData = new FormData(event.target);
-        const clienteData = {};
-        const enderecoData = {};
-
-        formData.forEach((value, key) => {
-            if (['cep', 'logradouro', 'numero', 'complemento', 'bairro', 'cidade', 'uf'].includes(key)) {
-                enderecoData[key] = value;
-            } else {
-                clienteData[key] = value;
+        $("#cep").on("blur", function() {
+            var cep = $(this).val().replace(/\D/g, '');
+            if (cep !== "") {
+                $.getJSON("https://viacep.com.br/ws/" + cep + "/json/", function(data) {
+                    if (!("erro" in data)) {
+                        $("#logradouro").val(data.logradouro);
+                        $("#complemento").val(data.complemento);
+                        $("#bairro").val(data.bairro);
+                        $("#cidade").val(data.localidade);
+                        $("#uf").val(data.uf);
+                    } else {
+                        alert("CEP não encontrado.");
+                    }
+                });
             }
         });
 
-        fetch(`/clientes/atualizar/${cliente.id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                cliente: clienteData,
-                enderecoFaturamento: enderecoData
-            })
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error('Erro na atualização');
-            })
-            .then(data => {
-                alert('Cliente atualizado com sucesso!');
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                alert('Ocorreu um erro na atualização do cliente.');
-            });
-    });
-    $(document).ready(function(){
-        var user = JSON.parse(localStorage.getItem('user'));
-        var cliente = JSON.parse(localStorage.getItem('cliente'));
+        document.getElementById('atualizacaoForm').addEventListener('submit', function(event) {
+            event.preventDefault();
 
+            const cliente = JSON.parse(localStorage.getItem('cliente'));
+            if (!cliente || !cliente.id) {
+                alert('Cliente não logado ou ID do cliente não encontrado.');
+                return;
+            }
+
+            const formData = new FormData(event.target);
+            const clienteData = {};
+            const enderecoData = {};
+
+            formData.forEach((value, key) => {
+                if (['cep', 'logradouro', 'numero', 'complemento', 'bairro', 'cidade', 'uf'].includes(key)) {
+                    enderecoData[key] = value;
+                } else {
+                    clienteData[key] = value;
+                }
+            });
+
+            fetch(`/clientes/atualizar/${cliente.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    cliente: clienteData,
+                    enderecoFaturamento: enderecoData
+                })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Erro na atualização');
+                })
+                .then(data => {
+                    alert('Cliente atualizado com sucesso!');
+                    localStorage.setItem('cliente', JSON.stringify(data));
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Ocorreu um erro na atualização do cliente.');
+                });
+        });
+
+        var user = JSON.parse(localStorage.getItem('user'));
         if (user) {
             $("#loginItem").hide();
             $("#username").text(user.nome);
@@ -239,7 +277,6 @@
             $("#loginItem").show();
             $("#userItem").hide();
         }
-
         $("#loginButton").click(function(){
             window.location.href = "/login.html";
         });
@@ -258,25 +295,8 @@
             location.reload();
         });
     });
-    $(document).ready(function() {
-        $("#cep").on("blur", function() {
-            var cep = $(this).val().replace(/\D/g, '');
-            if (cep !== "") {
-                $.getJSON("https://viacep.com.br/ws/" + cep + "/json/", function(data) {
-                    if (!("erro" in data)) {
-                        $("#logradouro").val(data.logradouro);
-                        $("#complemento").val(data.complemento);
-                        $("#bairro").val(data.bairro);
-                        $("#cidade").val(data.localidade);
-                        $("#uf").val(data.uf);
-                    } else {
-                        alert("CEP não encontrado.");
-                    }
-                });
-            }
-        });
-    });
 </script>
+
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
