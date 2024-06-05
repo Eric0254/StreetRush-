@@ -2,6 +2,8 @@ package com.example.TesteStreetRush.controller;
 
 import com.example.TesteStreetRush.model.Cliente;
 import com.example.TesteStreetRush.model.ClienteCadastroWrapper;
+import com.example.TesteStreetRush.model.EnderecoEntrega;
+import com.example.TesteStreetRush.model.EnderecoEntregaWrapper;
 import com.example.TesteStreetRush.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,5 +37,24 @@ public class ClienteController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
     }
 
+    @PostMapping("/adicionar-endereco-entrega")
+    public ResponseEntity<Cliente> adicionarEnderecoEntrega(@RequestBody EnderecoEntregaWrapper wrapper) {
+        Long clienteId = wrapper.getClienteId();
+        EnderecoEntrega enderecoEntrega = wrapper.getEnderecoEntrega();
 
+        if (enderecoEntrega == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        Optional<Cliente> clienteOpt = clienteService.findById(clienteId);
+        if (clienteOpt.isPresent()) {
+            Cliente cliente = clienteOpt.get();
+            enderecoEntrega.setCliente(cliente); // Configura a associação bidirecional
+            cliente.setEnderecoEntrega(enderecoEntrega);
+            clienteService.save(cliente);
+            return new ResponseEntity<>(cliente, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
