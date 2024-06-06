@@ -7,7 +7,7 @@
     <!-- Adicionando Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link href="css/cardcss.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">    <link href="css/cardcss.css" rel="stylesheet">
     <style>
         #nav {
             margin-bottom: 20px;
@@ -15,10 +15,6 @@
 
         #loginButton {
             margin-right: 10px;
-        }
-
-        .product-card {
-            margin-bottom: 20px;
         }
 
         #userIcon {
@@ -52,6 +48,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">Contato</a>
             </li>
+            <!-- Carrinho de compras -->
+            <li class="nav-item">
+                <a class="nav-link" href="carrinho.html">
+                    <i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span>
+                </a>
+            </li>
             <li class="nav-item" id="loginItem">
                 <button id="loginButton" class="btn btn-primary">Login</button>
             </li>
@@ -67,6 +69,7 @@
         </ul>
     </div>
 </nav>
+
 
 <!-- Carrossel de Banner de Produtos -->
 <div id="productCarousel" class="carousel slide" data-ride="carousel">

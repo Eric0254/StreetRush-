@@ -6,15 +6,23 @@
     <title>Detalhes do Produto</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <style>
-    #userIcon {
-        height: 30px; /* Ajuste este valor conforme necessário */
-        width: 30px; /* Ajuste este valor conforme necessário */
+    #nav {
+        margin-bottom: 20px;
     }
+
+    #loginButton {
+        margin-right: 10px;
+    }
+
+    #userIcon {
+        height: 30px;
+        width: 30px;
+    }
+
     .navbar-brand img {
         height: 60px;
     }
@@ -32,13 +40,19 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <h5><a class="nav-link" href="index.html">Home</a></h5>
+                <a class="nav-link" href="index.html">Home</a>
             </li>
             <li class="nav-item">
-                <h5><a class="nav-link" href="#">Produtos</a></h5>
+                <a class="nav-link" href="#">Produtos</a>
             </li>
             <li class="nav-item">
-                <h5><a class="nav-link" href="#">Contato</a></h5>
+                <a class="nav-link" href="#">Contato</a>
+            </li>
+            <!-- Carrinho de compras -->
+            <li class="nav-item">
+                <a class="nav-link" href="carrinho.html">
+                    <i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span>
+                </a>
             </li>
             <li class="nav-item" id="loginItem">
                 <button id="loginButton" class="btn btn-primary">Login</button>
@@ -56,6 +70,7 @@
     </div>
 </nav>
 
+
 <div class="container mt-5" id="product-details">
     <!-- Os detalhes do produto serão inseridos aqui pelo JavaScript -->
 </div>
@@ -70,14 +85,19 @@
 <script>
     $(document).ready(function(){
         var user = JSON.parse(localStorage.getItem('user'));
+        var cliente = JSON.parse(localStorage.getItem('cliente'));
 
         if (user) {
-            $("#loginItem").hide(); // Esconde o botão de login
-            $("#username").text(user.nome); // Define o nome do usuário
-            $("#userItem").show(); // Mostra o item do usuário
+            $("#loginItem").hide();
+            $("#username").text(user.nome);
+            $("#userItem").show();
+        } else if (cliente) {
+            $("#loginItem").hide();
+            $("#username").text(cliente.nome);
+            $("#userItem").show();
         } else {
-            $("#loginItem").show(); // Mostra o botão de login
-            $("#userItem").hide(); // Esconde o item do usuário
+            $("#loginItem").show();
+            $("#userItem").hide();
         }
 
         $("#loginButton").click(function(){
@@ -85,16 +105,19 @@
         });
 
         $("#profileOption").click(function(){
-            // Redireciona para a página de perfil
-            window.location.href = "/profile.html";
+            if (user) {
+                window.location.href = "/telaADM.html";
+            } else if (cliente) {
+                window.location.href = "/Perfil.html";
+            }
         });
 
         $("#logoutOption").click(function(){
             localStorage.removeItem('user');
+            localStorage.removeItem('cliente');
             location.reload();
         });
     });
-
 
 
 
@@ -161,7 +184,7 @@
     }
 
 </script>
-<!-- Bootstrap JS and Popper.js -->
+<script src="js/addcarrinho.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </body>
 </html>
