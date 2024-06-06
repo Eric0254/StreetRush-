@@ -5,15 +5,25 @@ document.addEventListener('DOMContentLoaded', () => {
 const user = JSON.parse(localStorage.getItem('user'));
 const userCargo = user ? user.cargo : null;
 
+const itensPorPagina = 10;
+let paginaAtual = 1;
+let produtos = [];
+
 function fetchProducts() {
     fetch('/api/produtos/lista')
         .then(response => response.json())
         .then(data => {
-            data.sort((a, b) => b.id - a.id);
+            produtos = data;
+            produtos.sort((a, b) => b.id - a.id);
 
             const tableBody = document.getElementById('productTableBody');
             tableBody.innerHTML = '';
-            data.forEach(prod => {
+
+            const startIndex = (paginaAtual - 1) * itensPorPagina;
+            const endIndex = startIndex + itensPorPagina;
+            const produtosPagina = produtos.slice(startIndex, endIndex);
+
+            produtosPagina.forEach(prod => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${prod.id}</td>
@@ -27,8 +37,35 @@ function fetchProducts() {
                 `;
                 tableBody.appendChild(row);
             });
+
+            mostrarIndicadorPagina();
+            mostrarBotoesPaginacao();
+
         })
         .catch(error => console.error('Error fetching products:', error));
+}
+
+function mostrarIndicadorPagina() {
+    const totalPaginas = Math.ceil(produtos.length / itensPorPagina);
+    const indicadorPagina = document.getElementById('indicadorPagina');
+    indicadorPagina.textContent = `Página ${paginaAtual} de ${totalPaginas}`;
+}
+
+function mostrarBotoesPaginacao() {
+    const botaoAnterior = document.getElementById('botaoAnterior');
+    const botaoProximo = document.getElementById('botaoProximo');
+
+    if (paginaAtual === 1) {
+        botaoAnterior.style.display = 'none';
+    } else {
+        botaoAnterior.style.display = 'block';
+    }
+
+    if (paginaAtual >= Math.ceil(produtos.length / itensPorPagina)) {
+        botaoProximo.style.display = 'none';
+    } else {
+        botaoProximo.style.display = 'block';
+    }
 }
 
 
@@ -80,4 +117,13 @@ function confirmStatusUpdate(productId, currentStatus) {
     } else {
         alert('Ação não permitida: você não tem permissão para ativar/inativar produtos.');
     }
+}
+
+function irParaPagina(pagina) {
+    if (pagina === paginaAtual || pagina < 1) {
+        return;
+    }
+
+    paginaAtual = pagina;
+    fetchProducts();
 }

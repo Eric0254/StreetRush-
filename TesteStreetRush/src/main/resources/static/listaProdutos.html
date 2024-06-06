@@ -16,11 +16,14 @@
 </head>
 
 <body>
-<h1 class="title">Lista de Produtos</h1>
 
-<div class="filter-input">
-    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Pesquisar por nome">
+<div class="header-container">
+    <h1 class="title">Lista de Produtos</h1>
+    <div class="filter-input">
+        <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Pesquisar por nome">
+    </div>
 </div>
+
 
 <div class="table-container">
     <table border="1" id="userTable">
@@ -45,4 +48,11 @@
 
 <script src="scriptLista.js"></script>
 </body>
+<footer>
+    <div class="pagination">
+        <span id="indicadorPagina"></span>
+        <button onclick="irParaPagina(paginaAtual - 1)">Anterior</button>
+        <button onclick="irParaPagina(paginaAtual + 1)">Próxima</button>
+    </div>
+</footer>
 </html>
