@@ -2,6 +2,15 @@ h1{
     text-align: center;
 }
 
+.title {
+    margin-bottom: 0;
+}
+
+.header-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
 .table-container {
     text-align: center;
     display: flex;
@@ -24,4 +33,12 @@ th, td {
 
 .filter-input{
     text-align: center;
+    margin-top: 10px;
+}
+
+.pagination{
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

@@ -37,10 +37,10 @@ $(document).ready(function() {
     var groupedCart = {};
     cart.forEach(function(product) {
         if (groupedCart[product.id]) {
-            groupedCart[product.id].quantity += 1;
+            groupedCart[product.id].quantity += product.quantity;;
         } else {
             groupedCart[product.id] = product;
-            groupedCart[product.id].quantity = 1;
+            groupedCart[product.id].quantity = product.quantity;;
         }
     });
 
@@ -102,12 +102,14 @@ $(document).ready(function() {
         // Aqui você pode adicionar a lógica para processar o pagamento
         alert('Pagamento processado com sucesso!');
         $('#paymentModal').modal('hide');
+        window.location.href = "/resumoPedido.html";
     });
 
     $('#confirmPixPayment').click(function() {
         // Aqui você pode adicionar a lógica para processar o pagamento com PIX
         alert('Pagamento com PIX confirmado. Pedido gerado com sucesso!');
         $('#pixModal').modal('hide');
+        window.location.href = "/resumoPedido.html";
     });
 });
 

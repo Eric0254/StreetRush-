@@ -5,6 +5,7 @@ import com.example.TesteStreetRush.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
@@ -66,7 +70,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody User loginUser) {
         User user = userService.findByEmail(loginUser.getEmail());
-        if (user != null && loginUser.getSenha().equals(user.getSenha())) {
+        if (user != null && passwordEncoder.matches(loginUser.getSenha(), user.getSenha())) {
             if (user.getStatus().equals("ativo")) {
                 return new ResponseEntity<>(user, HttpStatus.OK);
             } else {

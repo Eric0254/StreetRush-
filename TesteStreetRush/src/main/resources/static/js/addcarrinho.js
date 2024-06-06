@@ -19,7 +19,15 @@ $(document).ready(function() {
                     imagem: produto.imagemPrincipal,
                     quantidade: 1
                 };
-                cart.push(product);
+
+                // Verifica se o produto já está no carrinho
+                var existingProduct = cart.find(item => item.id === product.id);
+                if (existingProduct) {
+                    existingProduct.quantity++;
+                }   else {
+                    product.quantity = 1;
+                    cart.push(product);
+                }
                 localStorage.setItem('cart', JSON.stringify(cart));
                 alert("Produto adicionado ao carrinho!");
             });
