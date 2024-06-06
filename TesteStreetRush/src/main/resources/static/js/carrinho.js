@@ -91,6 +91,8 @@ $(document).ready(function() {
                 $('#paymentModalLabel').text('Pagamento com Cartão de ' + paymentTypeText.charAt(0).toUpperCase() + paymentTypeText.slice(1));
                 $('#paymentModal').modal('show');
             }
+
+            localStorage.setItem('formaPagamento', paymentTypeText);
         } else {
             alert('Você precisa estar logado para acessar as opções de pagamento.');
             window.location.href = "/login.html";

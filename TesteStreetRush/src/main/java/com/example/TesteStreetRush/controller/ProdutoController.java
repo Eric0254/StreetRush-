@@ -27,7 +27,7 @@ public class ProdutoController {
     @Autowired
     private ProdutoService produtoService;
 
-    private static final String UPLOAD_DIR = "C:\\Users\\Micro\\OneDrive\\Documentos\\GitHub\\StreetRush-\\TesteStreetRush\\src\\main\\resources\\static\\img\\";
+    private static final String UPLOAD_DIR = "C:\\Users\\Gabriel\\Documents\\GitHub\\StreetRush-\\TesteStreetRush\\src\\main\\resources\\static\\img\\";
 
     @GetMapping
     public ResponseEntity<List<Produto>> listProducts() {
@@ -132,7 +132,7 @@ public class ProdutoController {
 
     @GetMapping("/img/{filename:.+}")
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-        Resource file = new FileSystemResource("C:\\Users\\Micro\\OneDrive\\Documentos\\GitHub\\StreetRush-\\TesteStreetRush\\src\\main\\resources\\static\\img\\" + filename);
+        Resource file = new FileSystemResource("C:\\Users\\Gabriel\\Documents\\GitHub\\StreetRush-\\TesteStreetRush\\src\\main\\resources\\static\\img\\" + filename);
         return ResponseEntity.ok().body(file);
     }
 }

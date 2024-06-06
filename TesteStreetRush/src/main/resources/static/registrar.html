@@ -12,6 +12,7 @@
         $(document).ready(function(){
             var urlParams = new URLSearchParams(window.location.search);
             var userId = urlParams.get('id');
+            var loggedUser = JSON.parse(localStorage.getItem('user'));
 
             if (userId) {
                 $.ajax({
@@ -25,6 +26,10 @@
                         $("#confirmarSenha").val(user.confirmarSenha);
                         $("#cargo").val(user.cargo);
                         $("#status").val(user.status);
+
+                        if (loggedUser && loggedUser.id == userId) {
+                            $("#cargo").attr("disabled", true);
+                        }
                     },
                     error: function(error){
                         console.log(error);

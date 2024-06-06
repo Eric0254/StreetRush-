@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Pedidos</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Listar Pedidos</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Data do Pedido</th>
+            <th>Número do Pedido</th>
+            <th>Valor Total</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody id="listaPedidos">
+        <!-- As informações dos pedidos serão preenchidas dinamicamente aqui -->
+        </tbody>
+    </table>
+</div>
+<footer class="bg-light text-center text-lg-start mt-5">
+    <div class="container p-4">
+        <!-- Conteúdo do rodapé -->
+    </div>
+</footer>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Função para carregar e exibir os pedidos da API
+        function carregarPedidos() {
+            $.ajax({
+                url: '/api/pedidos',
+                type: 'GET',
+                success: function(response) {
+                console.log(response);
+                    response.forEach(function(pedido) {
+                        var valorTotal = pedido.valorTotal ? `R$${pedido.valorTotal.toFixed(2)}` : 'Valor não definido';
+                        var row = `<tr>
+                            <td>${new Date(pedido.dataPedido).toLocaleString()}</td>
+                            <td>${pedido.numeroSequencial}</td>
+                            <td>${valorTotal}</td>
+                            <td>${pedido.status}</td>
+                            <td>
+                                <button class="btn btn-primary" onclick="editarPedido(${pedido.id})">Editar</button>
+                            </td>
+                        </tr>`;
+
+                        $('#listaPedidos').append(row);
+                    });
+                },
+                error: function(error) {
+                    console.error('Erro ao carregar os pedidos:', error);
+                }
+            });
+        }
+
+        // Função para redirecionar para a página de edição de pedido
+        window.editarPedido = function(pedidoId) {
+            window.location.href = '/editarPedido.html?id=' + pedidoId;
+        };
+
+        // Carrega os pedidos ao carregar a página
+        carregarPedidos();
+    });
+</script>
+</body>
+</html>

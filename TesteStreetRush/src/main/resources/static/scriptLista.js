@@ -33,7 +33,7 @@ function fetchProducts() {
                     <td>${prod.status}</td>
                     <td><button onclick="abrirNovaJanela('${prod.id}', '${prod.nome}', '${prod.avaliacao}', '${prod.descricao}', '${prod.preco}', '${prod.qtdEstoque}', '${prod.status}', '${prod.imagemPrincipal}')">Editar</button></td>
                     <td><button onclick="confirmStatusUpdate('${prod.id}', '${prod.status}')">Ativar/Inativar</button></td>
-                    <td><a href="PgDetalhes.html?id=${prod.id}" class="btn btn-dark">Visualizar</a></td>
+                    <td><a href="PgDetalhes.html?id=${prod.id}" class="btn btn-dark ${userCargo !== 'Administrador' ? 'disabled' : ''}">Visualizar</a></td>
                 `;
                 tableBody.appendChild(row);
             });
@@ -67,7 +67,6 @@ function mostrarBotoesPaginacao() {
         botaoProximo.style.display = 'block';
     }
 }
-
 
 function filterTable() {
     const input = document.getElementById("searchInput");
@@ -127,3 +126,11 @@ function irParaPagina(pagina) {
     paginaAtual = pagina;
     fetchProducts();
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetchProducts();
+    const addButton = document.querySelector('#userTable th:last-child button');
+    if (userCargo !== 'Administrador') {
+        addButton.remove();
+    }
+});

@@ -1,9 +1,15 @@
 package com.example.TesteStreetRush.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "cliente")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,14 +28,18 @@ public class Cliente {
     private String nascimento;
 
     private String genero;
-
+    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_entrega_id", referencedColumnName = "id")
     private EnderecoEntrega enderecoEntrega;
-
+    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_faturamento_id", referencedColumnName = "id")
     private EnderecoFaturamento enderecoFaturamento;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos;
+
 
     public Cliente() {
     }
@@ -117,5 +127,13 @@ public class Cliente {
 
     public void setEnderecoFaturamento(EnderecoFaturamento enderecoFaturamento) {
         this.enderecoFaturamento = enderecoFaturamento;
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
     }
 }

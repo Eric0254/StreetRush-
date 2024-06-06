@@ -1,5 +1,7 @@
 package com.example.TesteStreetRush.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -25,7 +27,7 @@ public class EnderecoEntrega {
 
 
     private String uf;
-
+    @JsonBackReference
     @OneToOne(mappedBy = "enderecoEntrega")
     @JoinColumn(name = "cliente_id", referencedColumnName = "id")
     private Cliente cliente;

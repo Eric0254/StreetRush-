@@ -1,0 +1,43 @@
+#resumoPedido {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+#resumoPedido h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #343a40;
+}
+
+#detalhesPedido .item-pedido {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+#detalhesPedido .item-pedido:last-child {
+    border-bottom: none;
+}
+
+#detalhesPedido .item-pedido p {
+    margin: 5px 0;
+}
+
+#totalValue {
+    font-weight: bold;
+    margin-top: 20px;
+    text-align: right;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.button-container .btn {
+    width: 48%;
+}

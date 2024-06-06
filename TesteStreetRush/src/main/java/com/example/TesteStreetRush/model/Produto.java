@@ -1,10 +1,13 @@
 package com.example.TesteStreetRush.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "produtos")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Produto {
 
     @Id
@@ -21,6 +24,9 @@ public class Produto {
 
     @ElementCollection
     private List<String> imagens;
+
+    @OneToMany(mappedBy = "produto")
+    private List<ItemPedido> itensPedido;
 
     public Produto() {
     }
@@ -109,5 +115,13 @@ public class Produto {
 
     public void setImagens(List<String> imagens) {
         this.imagens = imagens;
+    }
+
+    public List<ItemPedido> getItensPedido() {
+        return itensPedido;
+    }
+
+    public void setItensPedido(List<ItemPedido> itensPedido) {
+        this.itensPedido = itensPedido;
     }
 }

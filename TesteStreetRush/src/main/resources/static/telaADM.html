@@ -97,7 +97,7 @@
         <div class="card-body">
           <h5 class="card-title">Listar Pedidos</h5>
           <p class="card-text">Clique aqui para exibir os pedidos listados.</p>
-          <a href="#" class="btn btn-danger">Exibir</a>
+          <a href="listarPedidos.html" class="btn btn-danger">Exibir</a>
         </div>
       </div>
     </div>
@@ -164,6 +164,10 @@
       $("#loginItem").hide();
       $("#username").text(user.nome);
       $("#userItem").show();
+
+      if (user.cargo !== "Administrador") {
+                $("#card-usuario").hide();
+            }
     } else {
       $("#loginItem").show();
       $("#userItem").hide();

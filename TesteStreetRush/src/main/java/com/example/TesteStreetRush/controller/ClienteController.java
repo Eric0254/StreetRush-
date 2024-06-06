@@ -18,6 +18,12 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Cliente> getClienteById(@PathVariable Long id) {
+        Optional<Cliente> clienteOpt = clienteService.findById(id);
+        return clienteOpt.map(cliente -> new ResponseEntity<>(cliente, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
     @PostMapping("/cadastro")
     public ResponseEntity<Cliente> cadastrarClienteComEnderecoFaturamento(@RequestBody ClienteCadastroWrapper wrapper) {
         Cliente novoCliente = clienteService.cadastrarClienteComEnderecoFaturamento(wrapper.getCliente(), wrapper.getEnderecoFaturamento());

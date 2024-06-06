@@ -1,5 +1,7 @@
 package com.example.TesteStreetRush.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -24,7 +26,7 @@ public class EnderecoFaturamento {
     private String cidade;
 
     private String uf;
-
+    @JsonBackReference
     @OneToOne(mappedBy = "enderecoFaturamento")
     private Cliente cliente;
 

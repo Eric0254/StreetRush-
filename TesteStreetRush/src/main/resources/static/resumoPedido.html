@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumo do Pedido</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/resumoCSS.css">
+    <style>
+        #nav {
+          margin-bottom: 20px;
+        }
+
+        #loginButton {
+          margin-right: 10px;
+        }
+
+        #userIcon {
+          height: 30px;
+          width: 30px;
+        }
+
+        .navbar-brand img {
+          height: 60px;
+        }
+
+        .item-pedido img {
+            width: 150px;
+            height: auto;
+        }
+
+    </style>
+</head>
+<body>
+<nav id="nav" class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="index.html">
+        <img src="img/Logo.jpg" alt="StreetRushGear Logo">
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="produtos.html">Produtos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="carrinho.html">
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
+            </li>
+            <li class="nav-item" id="loginItem">
+                <a id="loginLink" class="nav-link" href="login.html" style="font-size: 0.9rem;">Faça seu login ou cadastre-se</a>
+            </li>
+            <li class="nav-item dropdown" id="userItem" style="display: none;">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="https://img.icons8.com/?size=100&id=83190&format=png&color=000000" alt="User Icon" id="userIcon"> <span id="username"></span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="#" id="profileOption">Perfil</a>
+                    <a class="dropdown-item" href="#" id="logoutOption">Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div id="resumoPedido">
+    <h2>Resumo do Pedido</h2>
+    <div id="detalhesPedido">
+        <!-- Detalhes do pedido serão preenchidos dinamicamente via JavaScript -->
+    </div>
+    <p id="totalValue"></p>
+    <div class="button-container">
+        <button id="concluirCompraButton" class="btn btn-primary">Concluir Compra</button>
+        <button id="voltarButton" class="btn btn-secondary">Voltar</button>
+    </div>
+</div>
+
+<footer class="bg-light text-center text-lg-start mt-5">
+    <div class="container p-4">
+        <div class="row">
+            <!-- Sobre nós -->
+            <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                <h5 class="text-uppercase">Sobre nós</h5>
+                <p>
+                    Somos uma loja especializada em artigos esportivos.
+                </p>
+            </div>
+            <!-- Links Úteis -->
+            <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                <h5 class="text-uppercase">Links Úteis</h5>
+                <ul class="list-unstyled mb-0">
+                    <li>
+                        <a href="index.html" class="text-dark">Home</a>
+                    </li>
+                    <li>
+                        <a href="produtos.html" class="text-dark">Produtos</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Contato -->
+            <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                <h5 class="text-uppercase">Contato</h5>
+                <ul class="list-unstyled mb-0">
+                    <li>
+                        <a href="mailto:seuemail@gmail.com" class="text-dark"><i class="fas fa-envelope"></i> Email</a>
+                    </li>
+                    <li>
+                        <a href="tel:+1234567890" class="text-dark"><i class="fas fa-phone"></i> Telefone</a>
+                    </li>
+                    <li>
+                        <a href="#!" class="text-dark"><i class="fas fa-map-marker-alt"></i> Endereço</a>
+                    </li>
+                </ul>
+                <!-- Social Media -->
+                <div class="mt-3">
+                    <a href="https://www.instagram.com/seuperfil" class="text-dark me-3"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/seuperfil" class="text-dark me-3"><i class="fab fa-facebook"></i></a>
+                    <a href="mailto:seuemail@gmail.com" class="text-dark"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2024 StreetRushGear. Todos os direitos reservados.
+    </div>
+</footer>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Recupere os detalhes do pedido do armazenamento local
+        var cart = JSON.parse(localStorage.getItem('cart')) || [];
+        var cliente = JSON.parse(localStorage.getItem('cliente'));
+        var totalValue = 0;
+        var formaPagamento = localStorage.getItem('formaPagamento');
+
+        if (cliente) {
+            // Construir o HTML dos detalhes do cliente
+            var detalhesClienteHTML = '<h3>Detalhes do Cliente</h3>';
+            for (var prop in cliente) {
+                if (cliente.hasOwnProperty(prop)) {
+                    if (prop === 'enderecoEntrega' && typeof cliente[prop] === 'object') {
+                        detalhesClienteHTML += '<p><strong>Endereço de Entrega:</strong></p>';
+                        for (var enderecoProp in cliente[prop]) {
+                            if (cliente[prop].hasOwnProperty(enderecoProp)) {
+                                detalhesClienteHTML += `<p><strong>${enderecoProp}:</strong> ${cliente[prop][enderecoProp]}</p>`;
+                            }
+                        }
+                    } else {
+                        detalhesClienteHTML += `<p><strong>${prop}:</strong> ${cliente[prop]}</p>`;
+                    }
+                }
+            }
+
+            // Adicionar os detalhes do cliente ao elemento #detalhesCliente
+            $('#detalhesCliente').html(detalhesClienteHTML);
+        } else {
+            $('#detalhesCliente').html('<p>Nenhum cliente encontrado.</p>');
+        }
+
+        var detalhesPedidoHTML = '';
+        cart.forEach(function(product) {
+            var quantity = product.quantity || 1;
+            var subtotal = product.preco * quantity;
+            totalValue += subtotal;
+
+            detalhesPedidoHTML += `
+                <div class="item-pedido">
+                    <img src="/api/produtos/img/${product.imagem}" alt="Imagem do Produto">
+                    <p><strong>Produto:</strong> ${product.nome}</p>
+                    <p><strong>Preço Unitário:</strong> R$${product.preco.toFixed(2)}</p>
+                    <p><strong>Quantidade:</strong> ${quantity}</p>
+                    <p><strong>Subtotal:</strong> R$${subtotal.toFixed(2)}</p>
+                </div>
+            `;
+        });
+        $('#detalhesPedido').html(detalhesPedidoHTML);
+
+        if (formaPagamento) {
+            $('#detalhesPedido').append('<p><strong>Forma de Pagamento:</strong> ' + formaPagamento + '</p>');
+        } else {
+            $('#detalhesPedido').append('<p><strong>Forma de Pagamento:</strong> Não informada</p>');
+        }
+
+        $('#totalValue').text('Total: R$' + totalValue.toFixed(2));
+    $('#voltarButton').click(function() {
+            window.location.href = "carrinho.html";
+        });
+
+        $('#concluirCompraButton').click(function() {
+            var pedido = {
+                cliente: { id: cliente.id },
+                itens: cart.map(function(product) {
+                    return {
+                        produto: { id: product.id },
+                        quantidade: product.quantity || 1,
+                        precoUnitario: product.preco
+                    };
+                }),
+                valorTotal: totalValue,
+                status: "aguardando pagamento",
+                dataPedido: new Date().toISOString()
+            };
+
+            $.ajax({
+                url: '/api/pedidos',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(pedido),
+                success: function(response) {
+                    alert('Pedido concluído com sucesso! Número do pedido: ' + response.numeroSequencial);
+                    localStorage.removeItem('cart');
+                    window.location.href = "index.html";
+                },
+                error: function(error) {
+                    alert('Erro ao concluir o pedido.');
+                }
+            });
+        });
+    });
+
+</script>
+</body>
+</html>
