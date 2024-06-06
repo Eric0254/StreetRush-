@@ -39,5 +39,12 @@ public class ClienteService {
     public Optional<Cliente> login(String email, String senha) {
         return clienteRepository.findByEmailAndSenha(email, senha);
     }
+    public Cliente save(Cliente cliente) {
+        return clienteRepository.save(cliente);
+    }
+
+    public Optional<Cliente> findById(Long id) {
+        return clienteRepository.findById(id);
+    }
 
 }
