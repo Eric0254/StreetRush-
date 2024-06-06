@@ -26,6 +26,59 @@
     .navbar-brand img {
         height: 60px;
     }
+
+    /* Container principal */
+    #product-details {
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Carrossel */
+    .carousel-inner {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .thumbnail-container {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .img-thumbnail {
+        border: 2px solid #ddd;
+        transition: transform 0.2s;
+    }
+
+    .img-thumbnail:hover {
+        transform: scale(1.05);
+        border-color: #007bff;
+    }
+
+    /* Botão de Comprar */
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        transition: background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    /* Efeito de Zoom */
+    .main-image {
+        transition: transform 0.3s ease-in-out;
+        cursor: zoom-in;
+    }
+
+    .main-image.zoomed {
+        transform: scale(2);
+        cursor: zoom-out;
+    }
+
 </style>
 <body>
 <!-- Navbar -->
@@ -178,38 +231,38 @@
 
                 let carouselImages = produto.imagens.map((img, index) => {
                     return `
-            <div class="carousel-item ${index === 0 ? 'active' : ''}">
-                <img src="/api/produtos/img/${img}" class="d-block w-100" alt="${produto.nome}">
-            </div>
-            `;
+                    <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                        <img src="/api/produtos/img/${img}" class="d-block w-100 main-image" alt="${produto.nome}" onclick="toggleZoom(this)">
+                    </div>
+                `;
                 }).join('');
 
                 let thumbnails = produto.imagens.map((img, index) => {
                     return `
-            <img src="/api/produtos/img/${img}" class="img-thumbnail" onclick="changeImage('${img}')" style="width: 100px; height: 100px;">
-            `;
+                    <img src="/api/produtos/img/${img}" class="img-thumbnail mx-1" onclick="changeImage('${img}')" style="width: 80px; height: 80px; cursor: pointer;">
+                `;
                 }).join('');
 
                 let details = `
-        <div class="row">
-            <div class="col-md-6">
-                <div class="carousel slide" id="productCarousel" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        ${carouselImages}
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div id="productCarousel" class="carousel slide border rounded" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                ${carouselImages}
+                            </div>
+                        </div>
+                        <div class="thumbnail-container mt-3 d-flex justify-content-center">
+                            ${thumbnails}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h1 class="display-5">${produto.nome}</h1>
+                        <p class="text-muted">${produto.descricao}</p>
+                        <p class="fs-4">Preço: <span class="fw-bold">${produto.preco}</span></p>
+                        <button class="btn btn-lg btn-primary mt-3">Comprar</button>
                     </div>
                 </div>
-                <div class="thumbnail-container d-flex flex-wrap">
-                    ${thumbnails}
-                </div>
-            </div>
-            <div class="col-md-6">
-                <h1>${produto.nome}</h1>
-                <p>${produto.descricao}</p>
-                <p>Preço: ${produto.preco}</p>
-                <button class="btn btn-primary">Comprar</button>
-            </div>
-        </div>
-        `;
+            `;
 
                 productDetails.append(details);
 
@@ -225,6 +278,13 @@
     function changeImage(img) {
         $('#productCarousel .carousel-item.active img').attr('src', '/api/produtos/img/' + img);
     }
+
+    function toggleZoom(img) {
+        $(img).toggleClass('zoomed');
+    }
+
+
+
 
 </script>
 <script src="js/addcarrinho.js"></script>
