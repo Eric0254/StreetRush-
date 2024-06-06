@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrinho</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>StreetRushGear</title>
+    <!-- Adicionando Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">    <link href="css/cardcss.css" rel="stylesheet">
     <style>
         #nav {
             margin-bottom: 20px;
@@ -65,72 +66,17 @@
         </ul>
     </div>
 </nav>
-<div class="container mt-3" id="cart"></div>
-<div class="container mt-3">
-    <p id="totalValue" class="font-weight-bold">Total: R$0</p>
-</div>
 
-<!-- Opções de pagamento -->
-<div class="container mt-3">
-    <h5>Escolha o método de pagamento:</h5>
-    <button class="btn btn-primary mr-2 payment-button" id="payPix">Pagar com PIX</button>
-    <button class="btn btn-primary mr-2 payment-button" id="payDebit">Pagar com Cartão de Débito</button>
-    <button class="btn btn-primary payment-button" id="payCredit">Pagar com Cartão de Crédito</button>
-</div>
 
-<!-- Modal para pagamento com PIX -->
-<div class="modal fade" id="pixModal" tabindex="-1" aria-labelledby="pixModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="pixModalLabel">Pagamento com PIX</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body text-center">
-                <p>Chave PIX: <span id="pixKey">streetrush@chavepix.com</span></p>
-                <img id="pixQrCode" src="https://qrcg-free-editor.qr-code-generator.com/main/assets/images/websiteQRCode_noFrame.png" alt="QR Code PIX" class="img-fluid mb-3">
-                <button class="btn btn-success" id="confirmPixPayment">Confirmar Pagamento</button>
-            </div>
+<!-- Lista de Produtos -->
+<div class="container mt-5">
+    <div class="row">
+        <div class="row" id="product-list">
         </div>
     </div>
 </div>
-
-<!-- Modal para pagamento com cartão -->
-<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="paymentModalLabel">Detalhes do Pagamento</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="paymentForm">
-                    <div class="form-group">
-                        <label for="cardNumber">Número do Cartão</label>
-                        <input type="text" class="form-control" id="cardNumber" placeholder="Número do Cartão">
-                    </div>
-                    <div class="form-group">
-                        <label for="cardName">Nome no Cartão</label>
-                        <input type="text" class="form-control" id="cardName" placeholder="Nome no Cartão">
-                    </div>
-                    <div class="form-group">
-                        <label for="expiryDate">Data de Validade</label>
-                        <input type="text" class="form-control" id="expiryDate" placeholder="MM/AA">
-                    </div>
-                    <div class="form-group">
-                        <label for="cvv">CVV</label>
-                        <input type="text" class="form-control" id="cvv" placeholder="CVV">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Pagar</button>
-                </form>
-            </div>
-        </div>
-    </div>
 </div>
+
 <!-- Footer -->
 <footer class="bg-light text-center text-lg-start mt-5">
     <div class="container p-4">
@@ -181,9 +127,47 @@
         © 2024 StreetRushGear. Todos os direitos reservados.
     </div>
 </footer>
+<script src="js/jsProd.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script src="js/carrinho.js">
+<script>
+    $(document).ready(function(){
+        var user = JSON.parse(localStorage.getItem('user'));
+        var cliente = JSON.parse(localStorage.getItem('cliente'));
+
+        if (user) {
+            $("#loginItem").hide();
+            $("#username").text(user.nome);
+            $("#userItem").show();
+        } else if (cliente) {
+            $("#loginItem").hide();
+            $("#username").text(cliente.nome);
+            $("#userItem").show();
+        } else {
+            $("#loginItem").show();
+            $("#userItem").hide();
+        }
+
+        $("#loginButton").click(function(){
+            window.location.href = "/login.html";
+        });
+
+        $("#profileOption").click(function(){
+            if (user) {
+                window.location.href = "/telaADM.html";
+            } else if (cliente) {
+                window.location.href = "/Perfil.html";
+            }
+        });
+
+        $("#logoutOption").click(function(){
+            localStorage.removeItem('user');
+            localStorage.removeItem('cliente');
+            location.reload();
+        });
+    });
 </script>
+
+<!-- Adicionando Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
