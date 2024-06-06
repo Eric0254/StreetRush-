@@ -223,7 +223,44 @@
             });
         });
     });
+    $(document).ready(function(){
+        var user = JSON.parse(localStorage.getItem('user'));
+        var cliente = JSON.parse(localStorage.getItem('cliente'));
+
+        if (user) {
+            $("#loginItem").hide();
+            $("#username").text(user.nome);
+            $("#userItem").show();
+        } else if (cliente) {
+            $("#loginItem").hide();
+            $("#username").text(cliente.nome);
+            $("#userItem").show();
+        } else {
+            $("#loginItem").show();
+            $("#userItem").hide();
+        }
+
+        $("#loginButton").click(function(){
+            window.location.href = "/login.html";
+        });
+
+        $("#profileOption").click(function(){
+            if (user) {
+                window.location.href = "/telaADM.html";
+            } else if (cliente) {
+                window.location.href = "/Perfil.html";
+            }
+        });
+
+        $("#logoutOption").click(function(){
+            localStorage.removeItem('user');
+            localStorage.removeItem('cliente');
+            location.reload();
+        });
+    });
 
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
